@@ -1,7 +1,9 @@
 package com.example.remotecontroller
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
@@ -10,10 +12,14 @@ import org.eclipse.paho.client.mqttv3.MqttException
 private lateinit var mqttAndroidClient: MqttAndroidClient
 
 class PahoMQTT {
-    fun connect(applicationContext : Context) {
 
+    fun getApplicationContext() {
+        val applicationContextContext = "@+id/button2"
+        assertEquals("com.example.remotecontroller", appContext.packageName)
+    }
 
-        mqttAndroidClient = MqttAndroidClient ( context.applicationContext,"YOUR MQTT BROKER ADDRESS","YOUR CLIENT ID" )
+    fun connect(applicationContext: Context) {
+        mqttAndroidClient = MqttAndroidClient (context.applicationContext,"YOUR MQTT BROKER ADDRESS","YOUR CLIENT ID" )
         try {
             val token = mqttAndroidClient.connect()
             token.actionCallback = object : IMqttActionListener {

@@ -1,5 +1,7 @@
 package com.example.remotecontroller
 
+
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -10,4 +12,5 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    
 }

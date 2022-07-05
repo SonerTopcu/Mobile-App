@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">IoT Remote Controller</string>
     <string name="power_icon"></string>
+
 </resources>

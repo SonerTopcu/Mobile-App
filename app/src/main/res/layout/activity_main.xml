@@ -21,6 +21,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/power_off" />
 
+    <TextView
+        android:id="@+id/on"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="10dp"
+        android:text="Power ON"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/power_on" />
+
     <Button
         android:id="@+id/temp_minus"
         android:layout_width="80dp"
@@ -109,17 +121,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/power_icon" />
-
-    <TextView
-        android:id="@+id/on"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="10dp"
-        android:text="Power ON"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/power_on" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
