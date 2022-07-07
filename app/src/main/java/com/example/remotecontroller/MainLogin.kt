@@ -2,18 +2,21 @@ package com.example.remotecontroller
 
 import android.content.Context
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 
+
 class MainLogin {
-    private lateinit var mqttClient: MqttAndroidClient
 
     companion object {
         const val TAG = "AndroidMqttClient"
     }
 
+    private lateinit var mqttClient: MqttAndroidClient
+
     fun connect(context: Context) {
-        val serverURI = "tcp://c435e415e08f4e6ea0d96e00124b51a3.s1.eu.hivemq.cloud:8883"
+        val serverURI = "tcp://broker.hivemq.com:1883"
         mqttClient = MqttAndroidClient(context, serverURI, "kotlin_client")
         mqttClient.setCallback(object : MqttCallback {
             override fun messageArrived(topic: String?, message: MqttMessage?) {
@@ -112,11 +115,4 @@ class MainLogin {
             e.printStackTrace()
         }
     }
-
-
-
-
-
-
-
 }
