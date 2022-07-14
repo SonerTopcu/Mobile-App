@@ -1,14 +1,7 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
     <string name="app_name">IoT Remote Controller</string>
     <string name="power_icon"></string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Connect</string>
-    <string name="action_sign_in_short">Connect</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-
+    <string name="login_text">CONNECT</string>
+    <string name="broker_hint">broker.hivemq.com</string>
+    <string name="topic_hint">Company</string>
 </resources>

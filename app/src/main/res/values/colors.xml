@@ -10,4 +10,5 @@
     <color name="background">#F6EA0A</color>
     <color name="power_button">#D50D0D</color>
     <color name="button">#17438F</color>
+    <color name="gray_300">#787E9E</color>
 </resources>
