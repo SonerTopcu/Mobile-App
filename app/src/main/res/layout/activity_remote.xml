@@ -1,123 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main_container"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/background"
-android:textAlignment="gravity"
-tools:context=".MainActivity">
-
-<TextView
-    android:id="@+id/off"
-    android:layout_width="80dp"
-    android:layout_height="30dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="55dp"
-    android:text="Power OFF"
-    android:textColor="#000000"
-    android:textSize="16sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/power_off" />
-
-<TextView
-    android:id="@+id/on"
-    android:layout_width="80dp"
-    android:layout_height="30dp"
-    android:layout_marginStart="60dp"
-    android:layout_marginTop="10dp"
-    android:text="Power ON"
-    android:textColor="#000000"
-    android:textSize="16sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/power_on" />
-
-<Button
-    android:id="@+id/temp_minus"
-    android:layout_width="80dp"
-    android:layout_height="100dp"
-    android:layout_marginTop="25dp"
-    android:layout_marginEnd="250dp"
-    android:text="TEMP-"
-    android:textAlignment="inherit"
-    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:textColor="#FFFFFFFF"
-    android:textSize="15sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/temp_plus"
-    app:rippleColor="#FFFFFFFF" />
-
-<Button
-    android:id="@+id/temp_plus"
-    android:layout_width="80dp"
-    android:layout_height="100dp"
-    android:layout_marginTop="64dp"
-    android:layout_marginEnd="250dp"
-    android:text="TEMP+"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
     android:textAlignment="gravity"
-    android:textColor="#FFFFFFFF"
-    android:textSize="15sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/power_on"
-    app:rippleColor="#FFFFFFFF" />
+    tools:context=".MainActivity">
 
-<Button
-    android:id="@+id/power_off"
-    style="@style/Widget.Material3.Button.IconButton"
-    android:layout_width="65dp"
-    android:layout_height="65dp"
-    android:layout_marginTop="100dp"
-    android:layout_marginEnd="70dp"
-    android:backgroundTint="#FA0404"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:ignore="SpeakableTextPresentCheck" />
+    <TextView
+        android:id="@+id/off"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="55dp"
+        android:text="Power OFF"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/power_off" />
 
-<Button
-    android:id="@+id/power_on"
-    style="@style/Widget.Material3.Button.IconButton"
-    android:layout_width="65dp"
-    android:layout_height="65dp"
-    android:layout_marginStart="70dp"
-    android:layout_marginTop="100dp"
-    android:layout_marginEnd="160dp"
-    android:accessibilityHeading="false"
-    android:backgroundTint="#FA0404"
-    android:backgroundTintMode="add"
-    app:layout_constraintEnd_toStartOf="@+id/power_off"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+    <TextView
+        android:id="@+id/on"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="10dp"
+        android:text="Power ON"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/power_on" />
 
-<ImageView
-    android:id="@+id/power_off_icon"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="112dp"
-    android:layout_marginEnd="14dp"
-    android:adjustViewBounds="false"
-    android:scaleType="centerInside"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.719"
-    app:layout_constraintStart_toEndOf="@+id/power_on_icon"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/power_icon" />
+    <Button
+        android:id="@+id/temp_minus"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="25dp"
+        android:onClick="sendMessageTempDown"
+        android:text="TEMP-"
+        android:textAlignment="inherit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="#FFFFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/temp_plus"
+        app:layout_constraintStart_toStartOf="@+id/temp_plus"
+        app:layout_constraintTop_toBottomOf="@+id/temp_plus"
+        app:rippleColor="#FFFFFFFF" />
 
-<ImageView
-    android:id="@+id/power_on_icon"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_marginStart="72dp"
-    android:layout_marginTop="112dp"
-    android:scaleType="centerInside"
-    app:layout_constraintEnd_toStartOf="@+id/power_off"
-    app:layout_constraintHorizontal_bias="0.012"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/power_icon" />
+    <Button
+        android:id="@+id/temp_plus"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="250dp"
+        android:onClick="sendMessageTempUp"
+        android:text="TEMP+"
+        android:textAlignment="gravity"
+        android:textColor="#FFFFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/power_on"
+        app:rippleColor="#FFFFFFFF" />
+
+    <Button
+        android:id="@+id/power_off"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="#FA0404"
+        android:onClick="sendMessagePowerOff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/power_on"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="160dp"
+        android:accessibilityHeading="false"
+        android:backgroundTint="#FA0404"
+        android:backgroundTintMode="add"
+        android:onClick="sendMessagePowerOn"
+        app:layout_constraintEnd_toStartOf="@+id/power_off"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/power_off_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="14dp"
+        android:adjustViewBounds="false"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintStart_toEndOf="@+id/power_on_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/power_icon" />
+
+    <ImageView
+        android:id="@+id/power_on_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="112dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/power_off"
+        app:layout_constraintHorizontal_bias="0.012"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/power_icon" />
+
+    <TextView
+        android:id="@+id/infoView"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="44dp"
+        android:background="@android:drawable/screen_background_light_transparent"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/temp_plus"
+        app:layout_constraintTop_toBottomOf="@+id/off"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/messageHistoryView"
+        android:layout_width="157dp"
+        android:layout_height="137dp"
+        android:layout_marginTop="36dp"
+        android:freezesText="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/infoView"
+        app:layout_constraintStart_toStartOf="@+id/infoView"
+        app:layout_constraintTop_toBottomOf="@+id/infoView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

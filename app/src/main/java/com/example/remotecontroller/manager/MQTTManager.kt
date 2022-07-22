@@ -31,6 +31,8 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
             }
         })
     }
+
+
     fun connect(){
         val mqttConnectOptions = MqttConnectOptions()
         mqttConnectOptions.setAutomaticReconnect(true)
@@ -64,23 +66,11 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     fun disconnect(){
         try {
             client.disconnect(null,object :IMqttActionListener{
-                /**
-                 * This method is invoked when an action has completed successfully.
-                 * @param asyncActionToken associated with the action that has completed
-                 */
+
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     uiUpdater?.resetUIWithConnection(false)
                 }
 
-                /**
-                 * This method is invoked when an action fails.
-                 * If a client is disconnected while an action is in progress
-                 * onFailure will be called. For connections
-                 * that use cleanSession set to false, any QoS 1 and 2 messages that
-                 * are in the process of being delivered will be delivered to the requested
-                 * quality of service next time the client connects.
-                 * @param asyncActionToken associated with the action that has failed
-                 */
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     uiUpdater?.resetUIWithConnection(false)
                 }
@@ -93,7 +83,6 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
         }
     }
 
-    // Subscribe to topic
     fun subscribe(topic: String){
         try
         {
@@ -114,7 +103,6 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
         }
     }
 
-    // Unsubscribe the topic
     fun unsubscribe(topic: String){
 
         try
@@ -140,7 +128,7 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     fun publish(message:String){
         try
         {
-            var msg = "Android says:" + message
+            var msg = message
             client.publish(this.connectionParams.topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("Mqtt", "Publish Success!")
