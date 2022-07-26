@@ -93,7 +93,7 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
                 }
                 override fun onFailure(asyncActionToken:IMqttToken, exception:Throwable) {
                     Log.w("Mqtt", "Subscription fail!")
-                    uiUpdater?.updateStatusViewWith("Falied to Subscribe to Topic")
+                    uiUpdater?.updateStatusViewWith("Failed to Subscribe to Topic")
                 }
             })
         }

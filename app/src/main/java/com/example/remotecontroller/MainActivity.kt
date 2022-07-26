@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     var mqttManager:MQTTmanager? = null
     var status = 0
     var mod = 18
+    private var message2: String = "Power On"
 
     override fun resetUIWithConnection(status: Boolean) {
         brokerField.isEnabled = !status
@@ -28,15 +29,30 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     override fun updateStatusViewWith(status: String) {
-        statusView.text = status
-
-        if (status == "Connected")
+       statusView.text = status
+        if (status == "Connected"){
             setContentView(R.layout.activity_remote)
-
+            /*if (message2 == status){
+                infoView.text = "zero"
+            }
+            else{
+                mod = message2.toInt()
+                this.status = 1
+                infoView.text = mod.toString()
+            }*/
+        }
     }
 
-    override fun update(message: String): String {
-        return message
+    override fun update(message: String) {
+        message2 = message
+        if (message == status.toString()){
+            infoView.text = "zero"
+        }
+        else{
+            mod = message.toInt()
+            this.status = 1
+            infoView.text = mod.toString()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,45 +67,58 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         if (!(brokerField.text.isNullOrEmpty() && topicField.text.isNullOrEmpty())) {
             var host = "tcp://broker.hivemq.com:1883"
             var topic = topicField.text.toString()
-            var connectionParams = MQTTConnectionParams("MQTTSample",host,topic,"","")
-            mqttManager = MQTTmanager(connectionParams,applicationContext,this)
-            mqttManager?.connect()
+            if (topic == "siyaharge"){
+                var connectionParams = MQTTConnectionParams("MQTTSample",host,topic,"","")
+                mqttManager = MQTTmanager(connectionParams,applicationContext,this)
+                mqttManager?.connect()
+            }
         }else{
             updateStatusViewWith("Please enter all valid fields")
         }
     }
 
+    private fun updateInfo() {
+        if (mod == 10){
+            infoView.text = ""
+        }
+        else
+            mod = message2!!.toInt()
+            status = 1
+            infoView.text = mod.toString()
 
+    }
 
-    fun sendMessagePowerOff(view: View){
-        var text1 = "Power Off"
+    fun statusPowerOn(view: View){
+        var text = "Power On"
+        status = 1
+        mqttManager?.publish(text)
+        infoView.text = mod.toString()
+    }
+
+    fun statusPowerOff(view: View){
+        var text = "Power Off"
         status = 0
-        infoView.text = null
-        mqttManager?.publish(text1)
-        mod = 18
+        mqttManager?.publish(text)
+        infoView.text = ""
     }
 
-    fun sendMessageTempUp(view: View){
-        var text1 = "Temp Up"
-        if (status == 1 && mod < 30){
+    fun statusTempUp(view: View){
+        var text = "Temp Up"
+
+        if(mod < 30 && status == 1){
             mod += 1
+            mqttManager?.publish(text)
             infoView.text = mod.toString()
         }
-        mqttManager?.publish(text1)
     }
 
-    fun sendMessageTempDown(view: View){
-        var text1 = "Temp Down"
-        if (status == 1 && mod >= 19){
+    fun statusTempDown(view: View){
+        var text = "Temp Down"
+
+        if(mod > 18 && status == 1){
             mod -= 1
+            mqttManager?.publish(text)
             infoView.text = mod.toString()
         }
-        mqttManager?.publish(text1)
     }
 }
-
-
-
-
-
-

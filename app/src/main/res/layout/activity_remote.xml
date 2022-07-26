@@ -15,23 +15,24 @@
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="55dp"
         android:text="Power OFF"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/power_off"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="@+id/power_off"
         app:layout_constraintTop_toBottomOf="@+id/power_off" />
 
     <TextView
         android:id="@+id/on"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_marginStart="60dp"
         android:layout_marginTop="10dp"
         android:text="Power ON"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/power_on"
+        app:layout_constraintStart_toStartOf="@+id/power_on"
         app:layout_constraintTop_toBottomOf="@+id/power_on" />
 
     <Button
@@ -39,7 +40,7 @@
         android:layout_width="80dp"
         android:layout_height="100dp"
         android:layout_marginTop="25dp"
-        android:onClick="sendMessageTempDown"
+        android:onClick="statusTempDown"
         android:text="TEMP-"
         android:textAlignment="inherit"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -48,22 +49,23 @@
         app:layout_constraintEnd_toEndOf="@+id/temp_plus"
         app:layout_constraintStart_toStartOf="@+id/temp_plus"
         app:layout_constraintTop_toBottomOf="@+id/temp_plus"
-        app:rippleColor="#FFFFFFFF" />
+        app:rippleColor="#FFFFFFFF"
+        tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/temp_plus"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="250dp"
-        android:onClick="sendMessageTempUp"
+        android:layout_marginTop="44dp"
+        android:onClick="statusTempUp"
         android:text="TEMP+"
-        android:textAlignment="gravity"
+        android:textAlignment="inherit"
         android:textColor="#FFFFFFFF"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/power_on"
+        app:layout_constraintEnd_toEndOf="@+id/on"
+        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintStart_toStartOf="@+id/on"
+        app:layout_constraintTop_toBottomOf="@+id/on"
         app:rippleColor="#FFFFFFFF" />
 
     <Button
@@ -74,7 +76,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="70dp"
         android:backgroundTint="#FA0404"
-        android:onClick="sendMessagePowerOff"
+        android:onClick="statusPowerOff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -90,7 +92,7 @@
         android:accessibilityHeading="false"
         android:backgroundTint="#FA0404"
         android:backgroundTintMode="add"
-        android:onClick="sendMessagePowerOn"
+        android:onClick="statusPowerOn"
         app:layout_constraintEnd_toStartOf="@+id/power_off"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -134,7 +136,8 @@
         android:textColor="#000000"
         android:textSize="60sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/off"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/temp_plus"
         app:layout_constraintTop_toBottomOf="@+id/off"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -145,6 +148,7 @@
         android:layout_height="137dp"
         android:layout_marginTop="36dp"
         android:freezesText="false"
+        android:scrollHorizontally="true"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/infoView"
