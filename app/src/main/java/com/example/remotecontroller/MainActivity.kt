@@ -13,8 +13,9 @@ import kotlinx.android.synthetic.main.activity_remote.*
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     var mqttManager:MQTTmanager? = null
     var status = 0
+    val mode = 0
     var mod = 18
-    private var message2: String = "Power On"
+    private var message2: String = "Not Open"
 
     override fun resetUIWithConnection(status: Boolean) {
         brokerField.isEnabled = !status
@@ -29,28 +30,19 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     override fun updateStatusViewWith(status: String) {
-       statusView.text = status
-        if (status == "Connected"){
+        statusView.text = status
+        if (status == "Connected")
             setContentView(R.layout.activity_remote)
-            /*if (message2 == status){
-                infoView.text = "zero"
-            }
-            else{
-                mod = message2.toInt()
-                this.status = 1
-                infoView.text = mod.toString()
-            }*/
-        }
     }
 
     override fun update(message: String) {
         message2 = message
-        if (message == status.toString()){
-            infoView.text = "zero"
+        if (message == mode.toString()){
+            infoView.text = "OFF"
         }
         else{
             mod = message.toInt()
-            this.status = 1
+            status = 1
             infoView.text = mod.toString()
         }
     }
