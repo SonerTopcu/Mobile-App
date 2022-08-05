@@ -7,11 +7,13 @@ import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.util.*
 
+
 class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Context, val uiUpdater: UIUpdaterInterface?) {
 
     private var client = MqttAndroidClient(context,connectionParams.host,connectionParams.clientId + id(context))
     private var uniqueID:String? = null
     private val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
+    val timestamp = System.currentTimeMillis() / 1000
 
     init {
 
@@ -51,7 +53,6 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
                     disconnectedBufferOptions.setDeleteOldestMessages(false)
                     client.setBufferOpts(disconnectedBufferOptions)
                     subscribe(params.topic)
-
                 }
                 override fun onFailure(asyncActionToken:IMqttToken, exception:Throwable) {
                     Log.w("Mqtt", "Failed to connect to: " + params.host + exception.toString())
@@ -66,15 +67,12 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     fun disconnect(){
         try {
             client.disconnect(null,object :IMqttActionListener{
-
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     uiUpdater?.resetUIWithConnection(false)
                 }
-
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     uiUpdater?.resetUIWithConnection(false)
                 }
-
             })
         }
         catch (ex:MqttException) {
@@ -83,24 +81,22 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
         }
     }
 
-    fun subscribe(topic: String){
-        try
-        {
-            client.subscribe(topic, 0, null, object:IMqttActionListener {
-                override fun onSuccess(asyncActionToken:IMqttToken) {
-                    Log.w("Mqtt", "Subscription!")
-                    uiUpdater?.updateStatusViewWith("Subscribed to Topic")
-                }
-                override fun onFailure(asyncActionToken:IMqttToken, exception:Throwable) {
-                    Log.w("Mqtt", "Subscription fail!")
-                    uiUpdater?.updateStatusViewWith("Failed to Subscribe to Topic")
-                }
-            })
-        }
-        catch (ex:MqttException) {
-            System.err.println("Exception subscribing")
-            ex.printStackTrace()
-        }
+    fun subscribe(topic: String): Any? = try
+    {
+        client.subscribe("siyaharge", 0, null, object:IMqttActionListener {
+            override fun onSuccess(asyncActionToken:IMqttToken) {
+                Log.w("Mqtt", "Subscription!")
+                uiUpdater?.updateStatusViewWith("Subscribed to Topic")
+            }
+            override fun onFailure(asyncActionToken:IMqttToken, exception:Throwable) {
+                Log.w("Mqtt", "Subscription fail!")
+                uiUpdater?.updateStatusViewWith("Failed to Subscribe to Topic")
+            }
+        })
+    }
+    catch (ex:MqttException) {
+        System.err.println("Exception subscribing")
+        ex.printStackTrace()
     }
 
     fun unsubscribe(topic: String){
@@ -122,14 +118,13 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
             System.err.println("Exception unsubscribe")
             ex.printStackTrace()
         }
-
     }
 
     fun publish(message:String){
         try
         {
             var msg = message
-            client.publish(this.connectionParams.topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
+            client.publish("siyaharge",msg.toByteArray(),0,false,null,object :IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("Mqtt", "Publish Success!")
                     uiUpdater?.updateStatusViewWith("Published to Topic")

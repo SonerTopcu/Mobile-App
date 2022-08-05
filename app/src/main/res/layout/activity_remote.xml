@@ -102,14 +102,14 @@
         android:id="@+id/power_off_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="14dp"
         android:adjustViewBounds="false"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintHorizontal_bias="0.72"
         app:layout_constraintStart_toEndOf="@+id/power_on_icon"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/power_off"
         app:srcCompat="@drawable/power_icon" />
 
     <ImageView
@@ -117,12 +117,12 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="72dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="12dp"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@+id/power_off"
         app:layout_constraintHorizontal_bias="0.012"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/power_on"
         app:srcCompat="@drawable/power_icon" />
 
     <TextView

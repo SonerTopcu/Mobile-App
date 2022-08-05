@@ -8,6 +8,7 @@ import com.example.remotecontroller.manager.MQTTmanager
 import com.example.remotecontroller.protocols.UIUpdaterInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_remote.*
+import java.sql.Timestamp
 
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     val mode = 0
     var mod = 18
     private var message2: String = "Not Open"
+    val timestamp = System.currentTimeMillis() / 1000
 
     override fun resetUIWithConnection(status: Boolean) {
         brokerField.isEnabled = !status
@@ -31,12 +33,16 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
 
     override fun updateStatusViewWith(status: String) {
         statusView.text = status
-        if (status == "Connected")
+        if (status == "Connected"){
+            mqttManager?.publish(timestamp.toString())
             setContentView(R.layout.activity_remote)
+        }
+
     }
 
     override fun update(message: String) {
         message2 = message
+        messageHistoryView.text = "BOJİ"
         if (message == mode.toString()){
             infoView.text = "OFF"
         }
@@ -68,6 +74,11 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
             updateStatusViewWith("Please enter all valid fields")
         }
     }
+
+    data class MessageInfo(
+        val timestamp : (System.currentTimeMillis() / 1000),
+
+    )
 
     private fun updateInfo() {
         if (mod == 10){
