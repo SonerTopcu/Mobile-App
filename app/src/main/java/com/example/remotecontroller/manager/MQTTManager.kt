@@ -13,7 +13,6 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     private var client = MqttAndroidClient(context,connectionParams.host,connectionParams.clientId + id(context))
     private var uniqueID:String? = null
     private val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
-    val timestamp = System.currentTimeMillis() / 1000
 
     init {
 

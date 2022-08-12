@@ -8,7 +8,6 @@ import com.example.remotecontroller.manager.MQTTmanager
 import com.example.remotecontroller.protocols.UIUpdaterInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_remote.*
-import java.sql.Timestamp
 
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
@@ -16,8 +15,9 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     var status = 0
     val mode = 0
     var mod = 18
-    private var message2: String = "Not Open"
     val timestamp = System.currentTimeMillis() / 1000
+    var message2 = "null"
+
 
     override fun resetUIWithConnection(status: Boolean) {
         brokerField.isEnabled = !status
@@ -37,20 +37,30 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
             mqttManager?.publish(timestamp.toString())
             setContentView(R.layout.activity_remote)
         }
-
     }
 
     override fun update(message: String) {
-        message2 = message
+        val map = message.split(",").associate {
+            val (left, right) = it.split(":")
+            left to right.toInt()}
+
+        val mapIndex = message.split(",").associate {
+            val (left, right) = it.split(":")
+            left to right.toInt()}
+
+
+
+
+         /*= message
         messageHistoryView.text = "BOJİ"
         if (message == mode.toString()){
             infoView.text = "OFF"
         }
         else{
-            mod = message.toInt()
+            mod = message.
             status = 1
             infoView.text = mod.toString()
-        }
+          */
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,13 +85,9 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         }
     }
 
-    data class MessageInfo(
-        val timestamp : (System.currentTimeMillis() / 1000),
-
-    )
 
     private fun updateInfo() {
-        if (mod == 10){
+        /*if (mod == 10){
             infoView.text = ""
         }
         else
@@ -89,6 +95,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
             status = 1
             infoView.text = mod.toString()
 
+         */
     }
 
     fun statusPowerOn(view: View){
@@ -96,6 +103,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         status = 1
         mqttManager?.publish(text)
         infoView.text = mod.toString()
+
     }
 
     fun statusPowerOff(view: View){
