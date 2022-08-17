@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 import time
 import os
 import json
+import threading
 
 
 def on_connect(client, userdata, flags, rc):
@@ -11,51 +12,45 @@ def on_connect(client, userdata, flags, rc):
         print(f"Connected with result code {rc}")
         client.connected_flag = True
         client.subscribe("siyaharge")
-        client.publish("siyaharge", messageOrangepi)
     else:
         print("Bad connection Returned code=", rc)
 
 
 def on_message(client, userdata, msg):
     global messageOrangepi
-    dic["timestamp"] = int(time.time())
+    global timeMessage
 
-    print(f"{msg.topic} {msg.payload}")
+    timeMessage = int(time.time())
+    dict["timestamp"] = timeMessage
+    print(msg.topic, msg.payload)
     string0 = msg.payload.decode("utf-8")
 
-    if string0 == "Power On" and dic["status"] != "ON":
-        dic["status"] = "ON"
+    if string0 == "Power On" and dict["status"] != "ON" and timeMessage == dict["timestamp"]:
+        dict["status"] = "ON"
         os.system('irsend SEND_ONCE ac switch_on')
-        messageOrangepi = json.dumps(dic)
+        messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Temp Up" and dic["mod"] < 30 and dic["status"] == "ON":
-        dic["mod"] += 1
-        os.system('irsend SEND_ONCE ac tempup_{}'.format(dic["mod"]))
-        print('irsend SEND_ONCE ac tempup_{}'.format(dic["mod"]))
-        messageOrangepi = json.dumps(dic)
+    elif string0 == "Temp Up" and dict["mod"] < 30 and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+        dict["mod"] += 1
+        os.system('irsend SEND_ONCE ac tempup_{}'.format(dict["mod"]))
+        print('irsend SEND_ONCE ac tempup_{}'.format(dict["mod"]))
+        messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Temp Down" and dic["mod"] >= 19 and dic["status"] == "ON":
-        dic["mod"] -= 1
-        os.system('irsend SEND_ONCE ac tempd_{}'.format(dic["mod"]))
-        print('irsend SEND_ONCE ac tempd_{}'.format(dic["mod"]))
-        messageOrangepi = json.dumps(dic)
+    elif string0 == "Temp Down" and dict["mod"] >= 19 and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+        dict["mod"] -= 1
+        os.system('irsend SEND_ONCE ac tempd_{}'.format(dict["mod"]))
+        print('irsend SEND_ONCE ac tempd_{}'.format(dict["mod"]))
+        messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Power Off":
-        dic["mod"] = 18
-        dic["status"] = "OFF"
+    elif string0 == "Power Off" and dict["status"] != "OFF" and timeMessage == dict["timestamp"]:
+        dict["mod"] = 18
+        dict["status"] = "OFF"
         os.system('irsend SEND_ONCE ac switch_off')
-        messageOrangepi = json.dumps(dic)
+        messageOrangepi = dict["mod"] - 1
         client.publish("siyaharge", messageOrangepi)
-
-    while True:
-        current = int(time.time())
-        if dic["timestamp"] == current - 5:
-            messageOrangepi = json.dumps(dic)
-            client.publish("siyaharge", messageOrangepi)
-            break
 
 
 def on_disconnect(client, userdata, rc):
@@ -64,13 +59,13 @@ def on_disconnect(client, userdata, rc):
     client.disconnect_flag = True
 
 
-dic = {
+dict = {
     "timestamp": int(time.time()),
     "status": "OFF",
-    "mod": 18,
+    "mod": 18
 }
-
-messageOrangepi = json.dumps(dic)
+messageOrangepi = dict["mod"]
+timeMessage = int(time.time())
 client = mqtt.Client()
 client.connected_flag = False
 client.disconnect_flag = False
@@ -83,7 +78,27 @@ count = 0
 stime = time.time()
 retry_delay = retry_delay_fixed
 client.on_connect = on_connect
-client.on_message = on_message
+
+
+class TimeStamp(threading.Thread):
+    def __init__(self, threadID, name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+
+    def run(self):
+        after = int(time.time()) + 5
+        while True:
+            current = int(time.time())
+            if current == after:
+                dict["timestamp"] = current
+                client.publish("siyaharge", dict["timestamp"])
+                after = int(time.time()) + 5
+
+
+timeThread = TimeStamp(1, "Time Thread")
+timeThread.start()
+
 
 while run_flag:
     client.loop(0.01)
