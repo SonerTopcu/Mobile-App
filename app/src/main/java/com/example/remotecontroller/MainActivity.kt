@@ -11,12 +11,11 @@ import kotlinx.android.synthetic.main.activity_remote.*
 
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
-    var mqttManager:MQTTmanager? = null
-    var status = 0
-    val mode = 0
-    var mod = 18
-    val timestamp = System.currentTimeMillis() / 1000
-    var message2 = "null"
+    private var mqttManager:MQTTmanager? = null
+    private var status = 0
+    private var mode = 0
+    private val timestamp = (System.currentTimeMillis() / 1000).toInt()
+    private var message2 = "null"
 
 
     override fun resetUIWithConnection(status: Boolean) {
@@ -34,33 +33,15 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     override fun updateStatusViewWith(status: String) {
         statusView.text = status
         if (status == "Connected"){
-            mqttManager?.publish(timestamp.toString())
             setContentView(R.layout.activity_remote)
         }
     }
 
     override fun update(message: String) {
-        val map = message.split(",").associate {
-            val (left, right) = it.split(":")
-            left to right.toInt()}
-
-        val mapIndex = message.split(",").associate {
-            val (left, right) = it.split(":")
-            left to right.toInt()}
-
-
-
-
-         /*= message
-        messageHistoryView.text = "BOJİ"
-        if (message == mode.toString()){
-            infoView.text = "OFF"
-        }
-        else{
-            mod = message.
-            status = 1
-            infoView.text = mod.toString()
-          */
+        if(message.toInt() < 31)
+            message2 = message
+        else(timestamp >= message.toInt())
+            mode = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,51 +66,47 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         }
     }
 
-
-    private fun updateInfo() {
-        /*if (mod == 10){
-            infoView.text = ""
-        }
-        else
-            mod = message2!!.toInt()
-            status = 1
-            infoView.text = mod.toString()
-
-         */
-    }
-
     fun statusPowerOn(view: View){
         var text = "Power On"
-        status = 1
         mqttManager?.publish(text)
-        infoView.text = mod.toString()
 
+        if(message2 == "18" && status != 1 && mode == 1){
+            status = 1
+            infoView.text = message2
+        }
+        else
+            messageHistoryView.text = "Orange pi OFFLINE"
     }
 
     fun statusPowerOff(view: View){
         var text = "Power Off"
-        status = 0
         mqttManager?.publish(text)
-        infoView.text = ""
+
+        if(message2 == "17" && status == 1 && mode == 1){
+            status = 0
+            infoView.text = "OFF"
+        }
+        else
+            messageHistoryView.text = "Orange pi OFFLINE"
     }
 
     fun statusTempUp(view: View){
         var text = "Temp Up"
+        mqttManager?.publish(text)
 
-        if(mod < 30 && status == 1){
-            mod += 1
-            mqttManager?.publish(text)
-            infoView.text = mod.toString()
-        }
+        if(message2.toInt() < 30 && status == 1 && mode == 1)
+            infoView.text = message2
+        else
+            messageHistoryView.text = "Orange pi OFFLINE"
     }
 
     fun statusTempDown(view: View){
         var text = "Temp Down"
+        mqttManager?.publish(text)
 
-        if(mod > 18 && status == 1){
-            mod -= 1
-            mqttManager?.publish(text)
-            infoView.text = mod.toString()
-        }
+        if(message2.toInt() > 18 && status == 1 && mode == 1)
+            infoView.text = message2
+        else
+            messageHistoryView.text = "Orange pi OFFLINE"
     }
 }
