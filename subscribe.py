@@ -25,27 +25,43 @@ def on_message(client, userdata, msg):
     print(msg.topic, msg.payload)
     string0 = msg.payload.decode("utf-8")
 
-    if string0 == "Power On" and dict["status"] != "ON" and timeMessage == dict["timestamp"]:
+    if string0 == "Power On" and timeMessage == dict["timestamp"]:
+        if dict["status"] == "0N":
+            messageOrangepi = dict["mod"]
+            client.publish("siyaharge", messageOrangepi)
+
         dict["status"] = "ON"
         os.system('irsend SEND_ONCE ac switch_on')
         messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Temp Up" and dict["mod"] < 30 and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+    elif string0 == "Temp Up" and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+        if dict["mod"] == 30:
+            messageOrangepi = dict["mod"]
+            client.publish("siyaharge", messageOrangepi)
+
         dict["mod"] += 1
         os.system('irsend SEND_ONCE ac tempup_{}'.format(dict["mod"]))
         print('irsend SEND_ONCE ac tempup_{}'.format(dict["mod"]))
         messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Temp Down" and dict["mod"] >= 19 and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+    elif string0 == "Temp Down" and dict["status"] == "ON" and timeMessage == dict["timestamp"]:
+        if dict["mod"] == 18:
+            messageOrangepi = dict["mod"]
+            client.publish("siyaharge", messageOrangepi)
+
         dict["mod"] -= 1
         os.system('irsend SEND_ONCE ac tempd_{}'.format(dict["mod"]))
         print('irsend SEND_ONCE ac tempd_{}'.format(dict["mod"]))
         messageOrangepi = dict["mod"]
         client.publish("siyaharge", messageOrangepi)
 
-    elif string0 == "Power Off" and dict["status"] != "OFF" and timeMessage == dict["timestamp"]:
+    elif string0 == "Power Off" and timeMessage == dict["timestamp"]:
+        if dict["status"] == "0FF":
+            messageOrangepi = dict["mod"] - 1
+            client.publish("siyaharge", messageOrangepi)
+
         dict["mod"] = 18
         dict["status"] = "OFF"
         os.system('irsend SEND_ONCE ac switch_off')
@@ -92,7 +108,7 @@ class TimeStamp(threading.Thread):
             current = int(time.time())
             if current == after:
                 dict["timestamp"] = current
-                client.publish("siyaharge", dict["timestamp"])
+                client.publish("siyaharge", "50")
                 after = int(time.time()) + 5
 
 
