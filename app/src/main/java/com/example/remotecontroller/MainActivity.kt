@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     private var mode = 0
     private val timestamp = (System.currentTimeMillis() / 1000).toInt()
     private var message2 = "null"
+    private val orangepiOffline = "Orangepi OFFLINE"
+    private val power = "OFF"
+    private val warning = "First click on 'Power ON'"
 
 
     override fun resetUIWithConnection(status: Boolean) {
@@ -38,10 +41,12 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     override fun update(message: String) {
-        if(message.toInt() < 31)
+        if(message.toInt() < 31){
             message2 = message
-        else(timestamp >= message.toInt())
             mode = 1
+        }
+        else
+            mode = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,32 +75,40 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         var text = "Power On"
         mqttManager?.publish(text)
 
-        if(message2 == "18" && status != 1 && mode == 1){
+        if(message2 == "18" && mode == 1){
             status = 1
             infoView.text = message2
+            messageHistoryView.text = ""
         }
         else
-            messageHistoryView.text = "Orange pi OFFLINE"
+            messageHistoryView.text = orangepiOffline
     }
 
     fun statusPowerOff(view: View){
         var text = "Power Off"
         mqttManager?.publish(text)
 
-        if(message2 == "17" && status == 1 && mode == 1){
+        if(message2 == "17" && mode == 1){
+            if(status == 0)
+                messageHistoryView.text = ""
             status = 0
-            infoView.text = "OFF"
+            messageHistoryView.text = power
         }
         else
-            messageHistoryView.text = "Orange pi OFFLINE"
+            messageHistoryView.text = orangepiOffline
     }
 
     fun statusTempUp(view: View){
         var text = "Temp Up"
         mqttManager?.publish(text)
 
-        if(message2.toInt() < 30 && status == 1 && mode == 1)
+        if(message2.toInt() < 30 && mode == 1){
+            if(status != 1)
+                messageHistoryView.text = warning
+
             infoView.text = message2
+            messageHistoryView.text = ""
+        }
         else
             messageHistoryView.text = "Orange pi OFFLINE"
     }
@@ -104,8 +117,10 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         var text = "Temp Down"
         mqttManager?.publish(text)
 
-        if(message2.toInt() > 18 && status == 1 && mode == 1)
+        if(message2.toInt() > 18 && status == 1 && mode == 1){
             infoView.text = message2
+            messageHistoryView.text = ""
+        }
         else
             messageHistoryView.text = "Orange pi OFFLINE"
     }
